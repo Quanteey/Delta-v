@@ -125,6 +125,7 @@
         Slash: 0.75
         Piercing: 0.75
         Heat: 0.75
+  - type: AllowSuitStorage # DeltaV - allow captain's coat to hold air tanks
 
 - type: entity
   parent: ClothingOuterWinterCoatToggleable
