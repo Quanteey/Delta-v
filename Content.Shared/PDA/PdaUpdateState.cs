@@ -16,6 +16,7 @@ namespace Content.Shared.PDA
         public bool HasUplink;
         public bool CanPlayMusic;
         public string? Address;
+        public string? StationAlertInfo; // DeltaV
 
         public PdaUpdateState(
             List<NetEntity> programs,
@@ -25,6 +26,7 @@ namespace Content.Shared.PDA
             bool hasPai,
             PdaIdInfoText pdaOwnerInfo,
             string? stationName,
+            string? stationAlertInfo, // DeltaV
             bool hasUplink = false,
             bool canPlayMusic = false,
             string? address = null)
@@ -37,6 +39,7 @@ namespace Content.Shared.PDA
             HasUplink = hasUplink;
             CanPlayMusic = canPlayMusic;
             StationName = stationName;
+            StationAlertInfo = stationAlertInfo; // DeltaV
             Address = address;
         }
     }

@@ -1,3 +1,4 @@
+using Content.Server._DV.AlertInfo;
 using Content.Server.Access.Systems;
 using Content.Server.AlertLevel;
 using Content.Server.CartridgeLoader;
@@ -59,6 +60,7 @@ namespace Content.Server.PDA
             SubscribeLocalEvent<StationRenamedEvent>(OnStationRenamed);
             SubscribeLocalEvent<EntityRenamedEvent>(OnEntityRenamed, after: new[] { typeof(IdCardSystem) });
             SubscribeLocalEvent<AlertLevelChangedEvent>(OnAlertLevelChanged);
+            SubscribeLocalEvent<StationAlertInfoChangedEvent>(OnStationAlertInfoChanged); // DeltaV
         }
 
         private void OnEntityRenamed(ref EntityRenamedEvent ev)
@@ -184,6 +186,7 @@ namespace Content.Server.PDA
 
             UpdateStationName(uid, pda);
             UpdateAlertLevel(uid, pda);
+            UpdateAlertInfo(uid, pda); // DeltaV - update the text entered on the comms console
             // TODO: Update the level and name of the station with each call to UpdatePdaUi is only needed for latejoin players.
             // TODO: If someone can implement changing the level and name of the station when changing the PDA grid, this can be removed.
 
@@ -208,6 +211,7 @@ namespace Content.Server.PDA
                     StationAlertColor = pda.StationAlertColor
                 },
                 pda.StationName,
+                pda.StationAlertInfo, // DeltaV
                 showUplink,
                 hasInstrument,
                 address);
@@ -314,5 +318,23 @@ namespace Content.Server.PDA
 
             return address;
         }
+
+        // DeltaV - Begin changes for alert info
+        private void OnStationAlertInfoChanged(StationAlertInfoChangedEvent args)
+        {
+            UpdateAllPdaUisOnStation();
+        }
+
+        private void UpdateAlertInfo(EntityUid uid, PdaComponent pda)
+        {
+            var station = _station.GetOwningStation(uid);
+            pda.StationAlertInfo = null;
+            if (station == null)
+                return;
+            if (!TryComp(station, out AlertInfoComponent? alertInfoComp))
+                return;
+            pda.StationAlertInfo = alertInfoComp.Text;
+        }
+        // DeltaV - end changes
     }
 }
