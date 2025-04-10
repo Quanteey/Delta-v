@@ -12,3 +12,9 @@
   id: LVCablesStatic
   recipes:
   - CableStack
+
+- type: latheRecipePack
+  id: PartsStaticDeltaV
+  recipes:
+  - Beaker
+  - HandLabeler
